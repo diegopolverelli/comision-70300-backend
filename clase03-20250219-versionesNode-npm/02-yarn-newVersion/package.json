@@ -1,0 +1,12 @@
+{
+  "name": "02-yarn-newVersion",
+  "packageManager": "yarn@4.6.0",
+  "scripts": {
+    "start": "node ./src/app.js",
+    "dev": "node --watch ./src/app.js"
+  },
+  "type": "module",
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}
