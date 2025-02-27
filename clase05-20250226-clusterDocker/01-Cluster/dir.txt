@@ -1,0 +1,12 @@
+
+    Directory: C:\Users\diego\dev\Coder-M3-semana-70300\clases\clase05-clusterDocker\clase\01-Cluster
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+d----           26/2/2025    20:12                node_modules
+d----           26/2/2025    11:42                src
+-a---           26/2/2025    21:12              0 dir.txt
+-a---           26/2/2025    20:12          24953 package-lock.json
+-a---            7/2/2025    17:46            387 package.json
+-a---           26/2/2025    21:11           5254 pruebaOP01.txt
+
