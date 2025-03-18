@@ -1,0 +1,400 @@
+{
+     "openapi": "3.0.0",
+     "info": {
+          "title": "API ABM Users",
+          "version": "1.0.0",
+          "description": "API-Rest ABM Users"
+     },
+     "servers": [
+          {
+               "url": "http://localhost:3000",
+               "description": "Testing"
+          },
+          {
+               "url": "http://localhost:3001",
+               "description": "Desarrollo"
+          },
+          {
+               "url": "http://localhost:8080",
+               "description": "Produccion"
+          }
+     ],
+     "paths": {
+          "/api/products/": {
+               "get": {
+                    "summary": "Obtiene todos los productos",
+                    "tags": [
+                         "Products"
+                    ],
+                    "responses": {
+                         "200": {
+                              "description": "Los productos fueron obtenidos OK desde la DB"
+                         },
+                         "500": {
+                              "description": "Error interno del servidor"
+                         }
+                    }
+               }
+          },
+          "/api/users/": {
+               "get": {
+                    "summary": "Obtiene todos los usuarios previamente registrados en el sistema",
+                    "tags": [
+                         "Users"
+                    ],
+                    "responses": {
+                         "200": {
+                              "description": "Los usuarios fueron obtenidos OK desde la DB",
+                              "content": {
+                                   "application/json": {
+                                        "schema": {
+                                             "type": "object",
+                                             "properties": {
+                                                  "message": {
+                                                       "type": "string",
+                                                       "description": "Lista de usuarios"
+                                                  },
+                                                  "usuarios": {
+                                                       "type": "array",
+                                                       "items": {
+                                                            "$ref": "#components/schemas/User"
+                                                       }
+                                                  }
+                                             }
+                                        }
+                                   }
+                              }
+                         },
+                         "500": {
+                              "description": "Error interno del servidor"
+                         }
+                    }
+               },
+               "post": {
+                    "summary": "Graba un usuario",
+                    "tags": [
+                         "Users"
+                    ],
+                    "requestBody": {
+                         "required": true,
+                         "content": {
+                              "application/json": {
+                                   "schema": {
+                                        "$ref": "#components/requestBodies/createUser"
+                                   }
+                              }
+                         }
+                    },
+                    "responses": {
+                         "201": {
+                              "description": "Usuario creado"
+                         },
+                         "500": {
+                              "description": "Error interno del servidor"
+                         }
+                    }
+               }
+          },
+          "/api/users/{uid}": {
+               "get": {
+                    "summary": "Obtiene un usuario de la base de datos",
+                    "tags": [
+                         "Users"
+                    ],
+                    "parameters": [
+                         {
+                              "name": "uid",
+                              "in": "path",
+                              "required": true,
+                              "description": "id del usuario que se está solicitando",
+                              "schema": {
+                                   "type": "string"
+                              }
+                         }
+                    ],
+                    "responses": {
+                         "200": {
+                              "description": "Recupera un usuario de la DB, según el uid que enviamos en la ruta como parámetro"
+                         },
+                         "500": {
+                              "description": "Error interno del servidor"
+                         }
+                    }
+               }
+          },
+          "/": {
+               "get": {
+                    "summary": "Home Page",
+                    "description": "```html\n<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Home Page</title>\n</head>\n<body>\n    <h2>Practica Integradora:</h2>\n    <hr>\n    <form action=\"/api/sessions/login\" method=\"post\">\n        <div id=\"mensaje\"></div>\n        <input type=\"email\" name=\"email\" placeholder=\"Ingrese su email\">\n        <input type=\"password\" name=\"password\" placeholder=\"Contraseña\">\n        <input type=\"text\" name=\"navegador\" value=\"ok\" hidden>\n\n        <input type=\"submit\" value=\"Ingresar\">\n    </form>\n    <br><br>\n    <a href=\"/registro.html\">Registro</a>\n\n    <script src=\"js/index.js\"></script>\n</body>\n</html>\n```\n",
+                    "produces": [
+                         "text/html"
+                    ],
+                    "responses": {
+                         "200": {
+                              "description": "Home Page",
+                              "content": {
+                                   "text/html": {
+                                        "schema": {
+                                             "type": "string",
+                                             "example": "```html\n<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Home Page</title>\n</head>\n<body>\n    <h2>Practica Integradora:</h2>\n    <hr>\n    <form action=\"/api/sessions/login\" method=\"post\">\n        <div id=\"mensaje\"></div>\n        <input type=\"email\" name=\"email\" placeholder=\"Ingrese su email\">\n        <input type=\"password\" name=\"password\" placeholder=\"Contraseña\">\n        <input type=\"text\" name=\"navegador\" value=\"ok\" hidden>\n\n        <input type=\"submit\" value=\"Ingresar\">\n    </form>\n    <br><br>\n    <a href=\"/registro.html\">Registro</a>\n\n    <script src=\"js/index.js\"></script>\n</body>\n</html>\n```\n"
+                                        }
+                                   }
+                              }
+                         }
+                    }
+               }
+          },
+          "/api/sessions/login/": {
+               "post": {
+                    "summary": "Realizar login de un usuario previmanete registrado",
+                    "tags": [
+                         "Sessions"
+                    ],
+                    "requestBody": {
+                         "required": true,
+                         "content": {
+                              "application/json": {
+                                   "schema": {
+                                        "$ref": "#components/requestBodies/login"
+                                   }
+                              }
+                         }
+                    },
+                    "responses": {
+                         "200": {
+                              "description": "Devuelve un status de success y los datos del usuario que se ha logueado",
+                              "content": {
+                                   "application/json": {
+                                        "schema": {
+                                             "$ref": "#components/schemas/login"
+                                        }
+                                   }
+                              }
+                         },
+                         "400": {
+                              "description": "Bad Request",
+                              "content": {
+                                   "aplication/json": {
+                                        "schema": {
+                                             "oneOf": [
+                                                  {
+                                                       "$ref": "#components/schemas/error1"
+                                                  },
+                                                  {
+                                                       "$ref": "#components/schemas/error2"
+                                                  }
+                                             ]
+                                        }
+                                   }
+                              }
+                         }
+                    }
+               }
+          },
+          "/something": {
+               "get": {
+                    "security": [
+                         {
+                              "basicAuth": []
+                         },
+                         {
+                              "bearerAuth": []
+                         }
+                    ],
+                    "responses": {
+                         "401": {
+                              "$ref": "#/components/responses/UnauthorizedError"
+                         }
+                    }
+               },
+               "post": {
+                    "responses": {
+                         "401": {
+                              "$ref": "#/components/responses/UnauthorizedError"
+                         }
+                    }
+               }
+          },
+          "security": {
+               "0": {
+                    "basicAuth": []
+               },
+               "1": {
+                    "bearerAuth": []
+               }
+          }
+     },
+     "components": {
+          "schemas": {
+               "User": {
+                    "type": "object",
+                    "properties": {
+                         "_id": {
+                              "type": "ObjectId",
+                              "description": "Id autogenerado de mongo"
+                         },
+                         "first_name": {
+                              "type": "string",
+                              "description": "Nombre del usuario"
+                         },
+                         "last_name": {
+                              "type": "string",
+                              "description": "Apellido..."
+                         },
+                         "email": {
+                              "type": "string",
+                              "description": "Correo electronico"
+                         },
+                         "password": {
+                              "type": "string",
+                              "description": "contraseña de acceso"
+                         }
+                    },
+                    "example": {
+                         "_id": "ObjectId(\"60acc54545c8e82e0475f73a\")",
+                         "first_name": "Diego",
+                         "last_name": "Polverelli",
+                         "email": "diegopolverelli@hotmail.com",
+                         "password": 123
+                    }
+               },
+               "login": {
+                    "type": "object",
+                    "properties": {
+                         "status": {
+                              "type": "string",
+                              "description": "Login correcto...!!!"
+                         },
+                         "payload": {
+                              "type": "object",
+                              "properties": {
+                                   "_id": {
+                                        "type": "ObjectId",
+                                        "description": "id de Mongo Atlas"
+                                   },
+                                   "nombre": {
+                                        "type": "string",
+                                        "description": "nombre usuario"
+                                   },
+                                   "apellido": {
+                                        "type": "string",
+                                        "description": "apellido usuario"
+                                   },
+                                   "email": {
+                                        "type": "string",
+                                        "description": "email usuario"
+                                   },
+                                   "password": {
+                                        "type": "string",
+                                        "description": "contraseña"
+                                   },
+                                   "fec_alta": {
+                                        "type": "string",
+                                        "description": "fecha alta usuario"
+                                   }
+                              }
+                         }
+                    },
+                    "example": {
+                         "status": "Login correcto...!!!",
+                         "payload": {
+                              "_id": "ObjectId(\"60acc54545c8e82e0475f73a\")",
+                              "first_name": "Diego",
+                              "last_name": "Polverelli",
+                              "email": "diegopolverelli@hotmail.com",
+                              "password": "$2b$10$rz31bxi6bZ2xlKxNg7h5ruqX5E3eaTaossovb.m6YYG74tSypDetq",
+                              "fec_alt": "2024-01-02T19:01:46.677Z"
+                         }
+                    }
+               },
+               "error1": {
+                    "type": "object",
+                    "properties": {
+                         "error": {
+                              "type": "string",
+                              "description": "Complete email y password"
+                         }
+                    }
+               },
+               "error2": {
+                    "type": "object",
+                    "properties": {
+                         "error": {
+                              "type": "string",
+                              "description": "Credenciales incorrectas"
+                         }
+                    }
+               }
+          },
+          "requestBodies": {
+               "createUser": {
+                    "type": "object",
+                    "properties": {
+                         "first_name": {
+                              "type": "string",
+                              "description": "Nombre de usurio"
+                         },
+                         "last_name": {
+                              "type": "string",
+                              "description": "Apellido"
+                         },
+                         "email": {
+                              "type": "string",
+                              "description": "Correo del usuario"
+                         },
+                         "password": {
+                              "type": "string",
+                              "description": "Contraseña del usuario"
+                         }
+                    },
+                    "example": {
+                         "first_name": "Diego",
+                         "last_name": "Polverelli",
+                         "email": "diego@hotmail.com",
+                         "password": "coder123"
+                    }
+               },
+               "login": {
+                    "type": "object",
+                    "properties": {
+                         "email": {
+                              "type": "string",
+                              "description": "email del usuario"
+                         },
+                         "password": {
+                              "type": "string",
+                              "description": "contraseña usuario"
+                         }
+                    },
+                    "example": {
+                         "email": "diegopolverelli@hotmail.com",
+                         "password": "123"
+                    }
+               }
+          },
+          "responses": {
+               "UnauthorizedError": {
+                    "description": "Authentication information is missing or invalid",
+                    "headers": {
+                         "WWW_Authenticate": {
+                              "schema": {
+                                   "type": "string"
+                              }
+                         }
+                    }
+               }
+          },
+          "securitySchemes": {
+               "basicAuth": {
+                    "type": "http",
+                    "scheme": "basic"
+               },
+               "bearerAuth": {
+                    "type": "http",
+                    "scheme": "bearer",
+                    "bearerFormat": "JWT"
+               }
+          }
+     },
+     "tags": []
+}
